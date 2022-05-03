@@ -19,7 +19,7 @@
         <Button fx:id="authButton" text="Auth" defaultButton="true" onAction="#authButtonClick"/>
     </HBox>
     <VBox fx:id="messageBox" VBox.vgrow="ALWAYS" visible="false">
-        <TextArea fx:id="messageArea" visible="false" editable="false" VBox.vgrow="ALWAYS"/>
+        <TextArea fx:id="messageArea" editable="false" VBox.vgrow="ALWAYS"/>
         <HBox VBox.vgrow="ALWAYS">
             <TextField fx:id="textField" HBox.hgrow="ALWAYS"/>
             <Button fx:id="sendButton" text="Send" defaultButton="true" onAction="#sendButtonClick"/>
