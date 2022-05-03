@@ -9,20 +9,20 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.PasswordField?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ru.gb.chat.server.ChatController">
+      fx:controller="ru.gb.chatclient.ClientController">
     <padding>
         <Insets bottom="5.0" left="20.0" right="5.0" top="20.0"/>
     </padding>
     <HBox fx:id="loginBox" VBox.vgrow="ALWAYS">
         <TextField fx:id="loginField" promptText="Login"/>
         <PasswordField fx:id="passwordField" promptText="Password"/>
-        <Button fx:id="authButton" defaultButton="true" onAction="#authButtonClick"/>
+        <Button fx:id="authButton" text="Auth" defaultButton="true" onAction="#authButtonClick"/>
     </HBox>
     <VBox fx:id="messageBox" VBox.vgrow="ALWAYS" visible="false">
-        <TextArea fx:id="messageArea" editable="false" VBox.vgrow="ALWAYS"/>
+        <TextArea fx:id="messageArea" visible="false" editable="false" VBox.vgrow="ALWAYS"/>
         <HBox VBox.vgrow="ALWAYS">
-            <TextField fx:id="messageField" HBox.hgrow="ALWAYS"/>
-            <Button fx:id="sendButton" defaultButton="true" onAction="#sendButtonClick"/>
+            <TextField fx:id="textField" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="sendButton" text="Send" defaultButton="true" onAction="#sendButtonClick"/>
         </HBox>
     </VBox>
     <HBox spacing="20"/>

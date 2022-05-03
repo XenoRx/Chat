@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ru.gb.chatclient/ru.gb.chatclient.HelloApplication</mainClass>
+                            <mainClass>ru.gb.chatclient/ru.gb.chatclient.UIClient</mainClass>
                         </configuration>
                     </execution>
                 </executions>
