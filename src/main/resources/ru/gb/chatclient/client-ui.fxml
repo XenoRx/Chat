@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.PasswordField?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ru.gb.chatclient.ClientController">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #242F3D;" xmlns="http://javafx.com/javafx/11.0.2"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.gb.chatclient.ClientController">
     <padding>
         <Insets bottom="5.0" left="20.0" right="5.0" top="20.0"/>
     </padding>
-    <HBox fx:id="loginBox" VBox.vgrow="ALWAYS">
+    <HBox fx:id="loginBox" alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
         <TextField fx:id="loginField" promptText="Login"/>
         <PasswordField fx:id="passwordField" promptText="Password"/>
-        <Button fx:id="authButton" text="Auth" defaultButton="true" onAction="#authButtonClick"/>
+        <Button fx:id="authButton" defaultButton="true" ellipsisString="" onAction="#authButtonClick" prefHeight="24.0"
+                prefWidth="75.0" style="-fx-background-color: #00CED1;" text="Auth">
+            <font>
+                <Font name="Droid Sans" size="12.0"/>
+            </font>
+        </Button>
     </HBox>
-    <VBox fx:id="messageBox" VBox.vgrow="ALWAYS" visible="false">
-        <TextArea fx:id="messageArea" editable="false" VBox.vgrow="ALWAYS"/>
-        <HBox VBox.vgrow="ALWAYS">
-            <TextField fx:id="textField" HBox.hgrow="ALWAYS"/>
-            <Button fx:id="sendButton" text="Send" defaultButton="true" onAction="#sendButtonClick"/>
-        </HBox>
-    </VBox>
+    <HBox fx:id="messageBox" visible="false" spacing="5">
+        <VBox spacing="5">
+            <TextArea fx:id="messageArea" editable="false" style="-fx-background-color: black;" VBox.vgrow="ALWAYS"/>
+            <HBox>
+                <TextField fx:id="textField" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="sendButton" defaultButton="true" onAction="#sendButtonClick"
+                        style="-fx-background-color: green;" text="Send"/>
+            </HBox>
+        </VBox>
+        <ListView fx:id="clientList" minWidth="200" maxWidth="200" onMouseClicked="#selectClient"/>
+    </HBox>
     <HBox spacing="20"/>
 </VBox>
-

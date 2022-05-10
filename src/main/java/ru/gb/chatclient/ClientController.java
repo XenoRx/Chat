@@ -3,6 +3,7 @@ package ru.gb.chatclient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -12,6 +13,8 @@ public class ClientController {
 	
 	private final ChatClient client;
 	@FXML
+	private ListView<String> clientList;
+	@FXML
 	private HBox loginBox;
 	@FXML
 	private TextField loginField;
@@ -20,7 +23,7 @@ public class ClientController {
 	@FXML
 	private Button authButton;
 	@FXML
-	private VBox messageBox;
+	private HBox messageBox;
 	@FXML
 	private TextArea messageArea;
 	@FXML
@@ -38,12 +41,12 @@ public class ClientController {
 	}
 	
 	public void authButtonClick(ActionEvent actionEvent) {
-		client.sendMessage("/auth " + loginField.getText() + " " + passwordField.getText());
+		client.sendMessage(Command.AUTH, loginField.getText(), passwordField.getText());
 	}
 	
 	public void sendButtonClick(ActionEvent actionEvent) {
 		final String text = textField.getText();
-		if (text.trim().isEmpty()){
+		if (text.trim().isEmpty()) {
 			return;
 		}
 		client.sendMessage(text);
@@ -55,8 +58,29 @@ public class ClientController {
 		messageArea.appendText(message + "\n");
 	}
 	
-	public void toggleBoxesVisibility(boolean isSuccess) {
+	public void setAuth(boolean isSuccess) {
 		loginBox.setVisible(! isSuccess);
 		messageBox.setVisible(isSuccess);
+	}
+	
+	public void showError(String[] error) {
+		final Alert alert = new Alert(Alert.AlertType.ERROR, error[0], new ButtonType("OK", ButtonBar.ButtonData.OK_DONE));
+		alert.setTitle("Ошибка");
+		alert.showAndWait();
+	}
+	
+	public void selectClient(MouseEvent mouseEvent) {
+		if (mouseEvent.getClickCount() == 2) { // /w nick1 private message
+			final String message = textField.getText();
+			final String nick = clientList.getSelectionModel().getSelectedItem();
+			textField.setText(Command.PRIVATE_MESSAGE.collectMessage(nick, message));
+			textField.requestFocus();
+			textField.selectEnd();
+		}
+	}
+	
+	public void updateClientList(String[] params) {
+		clientList.getItems().clear();
+		clientList.getItems().addAll(params);
 	}
 }

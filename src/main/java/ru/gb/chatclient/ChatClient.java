@@ -1,5 +1,7 @@
 package ru.gb.chatclient;
 
+import javafx.application.Platform;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,7 +24,7 @@ public class ChatClient {
 		out = new DataOutputStream(socket.getOutputStream());
 		final Thread readThread = new Thread(() -> {
 			try {
-				waitAuth();
+				waitAuthenticate();
 				readMessage();
 			} finally {
 				closeConnection();
@@ -35,12 +37,26 @@ public class ChatClient {
 	private void readMessage() {
 		while (true) {
 			try {
-				final String msg = in.readUTF();
-				if ("/end".equals(msg)) {
-					controller.toggleBoxesVisibility(false);
-					break;
+				final String message = in.readUTF();
+				System.out.println("Получено сообщение: " + message);
+				if (Command.isCommand(message)) {
+					final Command command = Command.getCommand(message);
+					final String[] params = command.parse(message);
+					if (command == Command.END) {
+						controller.setAuth(false);
+						break;
+					}
+					if (command == Command.ERROR) {
+//						controller.showError(params);
+						Platform.runLater(() -> controller.showError(params));
+						continue;
+					}
+					if (command == Command.CLIENTS){
+						controller.updateClientList(params);
+						continue;
+					}
 				}
-				controller.addMessage(msg);
+				controller.addMessage(message);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -80,20 +96,30 @@ public class ChatClient {
 		}
 	}
 	
-	private void waitAuth() {
+	private void waitAuthenticate() {
 		while (true) {
 			try {
-				final String msg = in.readUTF();// /authok <- nick
-				if (msg.startsWith("/authok")) {
-					final String[] split = msg.split(" ");
-					final String nick = split[1];
-					controller.addMessage("Успешная авторизация под ником " + nick);
-					controller.toggleBoxesVisibility(true);
-					break;
+				final String msgAuth = in.readUTF();// /authok <- nick
+				if (Command.isCommand(msgAuth)) {
+					final Command command = Command.getCommand(msgAuth);
+					final String[] params = command.parse(msgAuth);
+					if (command == Command.AUTHOK) {
+						final String nick = params[0];
+						controller.addMessage("Успешная авторизация под ником " + nick);
+						controller.setAuth(true);
+						break;
+					}
+					if (command == Command.ERROR) {
+						Platform.runLater(() -> controller.showError(params));
+					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void sendMessage(Command command, String... params) {
+		sendMessage(command.collectMessage(params));
 	}
 }
