@@ -89,12 +89,6 @@ public enum Command { // перечисления
 			throw new RuntimeException("'" + message + "' is not a command");
 		}
 		final int index = message.indexOf(" ");
-		/*String cmd;      //Вариант 1
-		if (index > 0) {
-			cmd = message.substring(0, index);
-		} else {
-			cmd = message;
-		}*/
 		final String cmd = index > 0 ? message.substring(0, index) : message; //Вариант 2 тернарное выражение если тру то выполнится часть после ? если ложь то часть после :
 		final Command command = map.get(cmd);
 		if (command == null) {
@@ -107,8 +101,6 @@ public enum Command { // перечисления
 	
 	public String collectMessage(String... params) {
 		final String command = this.getCommand();
-//		final String join = String.join(" ", params);
-//		return command + " " + join;   //authok nick1
 		return command + (params == null ? "" : " " + String.join(" ", params));
 	}
 	

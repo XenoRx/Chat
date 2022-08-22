@@ -37,7 +37,7 @@ public class ClientHandler {
 			new Thread(() -> {
 				try {
 					authentication();
-					if (authTimeout == true) { // true для наглядности
+					if (authTimeout) {
 						closeConnection();
 					}
 					readMessages();

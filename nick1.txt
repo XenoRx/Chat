@@ -1,0 +1,13 @@
+nick2: dorou
+nick2: asdasdadasdasd2
+nick2: asdasdasdasdasd
+от nick2: dorui2
+от nick2: 123123123123123123
+от nick2: 1231232132312331
+от nick2: 123123123123123
+nick1: asdasd
+Сервер: nick2 вошёл в чат
+от nick2: 12312313
+от nick2: 12312312312312
+nick2: asdasddasasdasdasd
+nick2: asdasdasdadsasdasd

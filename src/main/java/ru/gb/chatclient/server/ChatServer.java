@@ -11,6 +11,7 @@ import java.util.Map;
 public class ChatServer {
 	private final AuthService authService;
 	private final Map<String, ClientHandler> clients;
+	private final MsgHistoryTracker msgHistory = new MsgHistoryTracker();
 	
 	public ChatServer() {
 		this.clients = new HashMap<>();
@@ -68,19 +69,19 @@ public class ChatServer {
 	}
 	
 	public void broadCast(String message) {
-		clients.values().forEach(client -> client.sendMessage(message));
-		/*
-		for (ClientHandler client : clients) { //old ver
+		clients.values().forEach(client -> {
 			client.sendMessage(message);
-		}
-		*/
+			msgHistory.write(client.getNick(), message);
+		});
 	}
 	
 	public void sendMessageToClient(ClientHandler sender, String to, String message) {
 		final ClientHandler receiver = clients.get(to);
 		if (receiver != null) {
 			receiver.sendMessage("от " + sender.getNick() + ": " + message);
+			msgHistory.write(to, "от " + sender.getNick() + ": " + message);
 			sender.sendMessage(to + ": " + message);
+			msgHistory.write(sender.getNick(), to + ": " + message);
 		} else {
 			sender.sendMessage(Command.ERROR, "Участника с ником " + to + " нет в чате!");
 		}
